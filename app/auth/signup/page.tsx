@@ -15,6 +15,8 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [emailSubmittable, setEmailSubmittable] = useState(false);
+  const [passwordSubmittable, setPasswordSubmittable] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.SubmitEvent) {
@@ -95,7 +97,8 @@ export default function SignupPage() {
               email={email} 
               setEmail={setEmail} 
               isLoading={isLoading} 
-              isCreating={true} 
+              isCreating={true}
+              setSubmittable={setEmailSubmittable}
             />
 
             <div>
@@ -107,6 +110,7 @@ export default function SignupPage() {
                 isLoading={isLoading} 
                 isCreating={true}
                 label="Password"
+                setSubmittable={setPasswordSubmittable}
               />
               <Password 
                 showPassword={showConfirmPassword} 
@@ -116,30 +120,31 @@ export default function SignupPage() {
                 isLoading={isLoading} 
                 isCreating={true}
                 label="Confirm Password"
+                setSubmittable={setPasswordSubmittable}
+                reference={password}
               />
             </div>
 
             <button
               type="submit"
-              disabled={isLoading}
-              className="
+              disabled={isLoading || !emailSubmittable || !passwordSubmittable}
+              className={`
                 w-full 
                 py-2.5 
                 px-4 
                 rounded-lg 
-                bg-slate-800 
-                text-white 
                 font-medium 
                 text-sm 
-                hover:bg-slate-700 
                 focus:outline-none 
                 focus:ring-2 
-                focus:ring-slate-500 
                 focus:ring-offset-2 
-                transition-colors 
-                disabled:opacity-60 
-                disabled:cursor-not-allowed
-              "
+                transition-colors
+                ${emailSubmittable && passwordSubmittable
+                  ? "bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500"
+                  : "bg-slate-300 text-slate-500 cursor-not-allowed"
+                }
+                ${isLoading ? "opacity-60 cursor-not-allowed" : ""}
+              `}
             >
               {isLoading ? "Creating account…" : "Create account"}
             </button>

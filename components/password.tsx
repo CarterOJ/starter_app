@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dispatch, SetStateAction } from "react";
 
 interface PasswordProps {
@@ -11,6 +11,8 @@ interface PasswordProps {
   isLoading: boolean,
   isCreating: boolean,
   label: string
+  setSubmittable?: Dispatch<SetStateAction<boolean>>
+  reference?: string
 }
 
 export default function Password({ 
@@ -20,21 +22,42 @@ export default function Password({
   setPassword, 
   isLoading, 
   isCreating,
-  label
+  label,
+  setSubmittable,
+  reference,
 }: PasswordProps) { 
   const [isFocused, setIsFocused] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const showValidation = isCreating && isFocused;
   const isValidLength = password.length >= 8;
   const includesNumber = /\d/.test(password);
-  const isValid = isValidLength && includesNumber;
-  const isInvalid = showValidation && password.length > 0 && !isValid;
+  const isReference = password === reference;
 
   const borderClasses = showValidation && password.length > 0
-    ? isValid
+    ? (!reference || isReference) && isValidLength && includesNumber
       ? "border-green-500 focus:ring-green-300"
       : "border-red-500 focus:ring-red-300"
     : "border-slate-200 focus:ring-slate-300";
+
+  useEffect(() => {
+    if (reference && !isReference) {
+      setErrorMessage("Passwords must match");
+      setSubmittable?.(false)
+    }
+    else if (!isValidLength) {
+      setErrorMessage("Password must be at least 8 characters");
+      reference && setSubmittable?.(false)
+    }
+    else if (!includesNumber) {
+      setErrorMessage("Password must include at least one number");
+      reference &&setSubmittable?.(false)
+    }
+    else {
+      reference && setSubmittable?.(true);
+      setErrorMessage(null);
+    }
+  }, [password]);
 
   return (
     <>
@@ -44,15 +67,11 @@ export default function Password({
       >
         {label}
       </label>
-      {isInvalid && (isValidLength ?
-        <p className="mb-1.5 text-sm text-red-600">
-          Password must include at least one number.
-        </p>
-      : 
-        <p className="mb-1.5 text-sm text-red-600">
-          Password must be at least 8 characters.
-        </p>
-      )}
+
+      {showValidation && password.length > 0 && errorMessage && 
+        <p className="mb-1.5 text-sm text-red-600">{errorMessage}</p>
+      }
+      
       <div className="relative">
         <input
           id={label}

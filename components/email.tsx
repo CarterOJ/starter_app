@@ -1,27 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dispatch, SetStateAction } from "react";
 
 interface EmailProps {  
   email: string,
   setEmail: Dispatch<SetStateAction<string>>,
   isLoading: boolean,
-  isCreating: boolean
+  isCreating: boolean,
+  setSubmittable?: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Email({ email, setEmail, isLoading, isCreating }: EmailProps) {
+export default function Email({ email, setEmail, isLoading, isCreating, setSubmittable }: EmailProps) {
   const [isFocused, setIsFocused] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const showValidation = isCreating && isFocused;
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isInvalid = showValidation && email.length > 0 && !isValid;
 
   const borderClasses = showValidation && email.length > 0
     ? isValid
       ? "border-green-500 focus:ring-green-300"
       : "border-red-500 focus:ring-red-300"
     : "border-slate-200 focus:ring-slate-300";
+
+  useEffect(() => {
+    if (!isValid) {
+      setErrorMessage("Please enter a valid email address.");
+      setSubmittable?.(false);
+    }
+    else {
+      setErrorMessage(null);
+      setSubmittable?.(true);
+    }
+  }, [email]);
 
   return (
     <>
@@ -31,11 +43,11 @@ export default function Email({ email, setEmail, isLoading, isCreating }: EmailP
       >
         Email
       </label>
-      {isInvalid && (
-        <p className="mb-1.5 text-sm text-red-600">
-          Please enter a valid email address.
-        </p>
-      )}
+
+      {showValidation && email.length > 0 && errorMessage && 
+        <p className="mb-1.5 text-sm text-red-600">{errorMessage}</p>
+      }
+      
       <input
         id="email"
         type="email"
