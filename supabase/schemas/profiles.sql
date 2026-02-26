@@ -64,3 +64,22 @@ CREATE POLICY "Users can delete their own profile"
 ON public.profiles 
 FOR DELETE 
 USING (auth.uid() = id);
+
+
+CREATE POLICY "Users can upload avatars"
+ON storage.objects
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  bucket_id = 'profiles' AND
+  (storage.foldername(name))[1] = 'avatars'
+);
+
+CREATE POLICY "Users can delete avatars"
+ON storage.objects
+FOR DELETE
+TO authenticated
+USING (
+  bucket_id = 'profiles' AND
+  (storage.foldername(name))[1] = 'avatars'
+);

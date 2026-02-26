@@ -59,7 +59,16 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200">
+      <div className="
+        min-h-screen 
+        flex 
+        items-center 
+        justify-center 
+        bg-gradient-to-br 
+        from-slate-50 
+        via-slate-100 
+        to-slate-200
+      ">
         <Spinner size="lg" />
       </div>
     );
@@ -68,9 +77,27 @@ export default function Dashboard() {
   const displayName = profile?.full_name || profile?.email?.split("@")[0] || "User";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 px-4 py-8">
+    <div className="
+      min-h-screen 
+      bg-gradient-to-br 
+      from-slate-50 
+      via-slate-100 
+      to-slate-200 
+      px-4 
+      py-8
+    ">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/60 p-6 mb-8">
+        <div className="
+          bg-white/80 
+          backdrop-blur-sm 
+          rounded-2xl 
+          shadow-xl 
+          shadow-slate-200/50 
+          border 
+          border-slate-200/60 
+          p-6 
+          mb-8
+        ">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-semibold text-slate-800 tracking-tight">
@@ -130,7 +157,16 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/60 p-6">
+          <div className="
+            bg-white/80 
+            backdrop-blur-sm 
+            rounded-2xl 
+            shadow-xl 
+            shadow-slate-200/50 
+            border 
+            border-slate-200/60 
+            p-6
+          ">
             <h2 className="text-lg font-semibold text-slate-800 mb-2">
               Getting Started
             </h2>
@@ -154,7 +190,15 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/60 p-6">
+          <div className="
+            bg-white/80 
+            backdrop-blur-sm 
+            rounded-2xl 
+            shadow-xl 
+            shadow-slate-200/50 
+            border 
+            border-slate-200/60 
+            p-6">
             <h2 className="text-lg font-semibold text-slate-800 mb-2">
               Your Account
             </h2>
@@ -166,7 +210,16 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/60 p-6">
+          <div className="
+            bg-white/80 
+            backdrop-blur-sm 
+            rounded-2xl 
+            shadow-xl 
+            shadow-slate-200/50 
+            border 
+            border-slate-200/60 
+            p-6
+          ">
             <h2 className="text-lg font-semibold text-slate-800 mb-2">
               Quick Actions
             </h2>
