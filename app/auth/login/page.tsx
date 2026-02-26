@@ -127,6 +127,7 @@ export default function LoginPage() {
                 transition-colors 
                 disabled:opacity-60 
                 disabled:cursor-not-allowed
+                cursor-pointer
               "
             >
               {isLoading ? "Signing in…" : "Sign in"}

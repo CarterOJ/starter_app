@@ -140,7 +140,7 @@ export default function SignupPage() {
                 focus:ring-offset-2 
                 transition-colors
                 ${emailSubmittable && passwordSubmittable
-                  ? "bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500"
+                  ? "bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500 cursor-pointer"
                   : "bg-slate-300 text-slate-500 cursor-not-allowed"
                 }
                 ${isLoading ? "opacity-60 cursor-not-allowed" : ""}

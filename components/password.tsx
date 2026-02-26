@@ -122,6 +122,7 @@ export default function Password({
             focus:ring-inset 
             disabled:opacity-60 
             disabled:cursor-not-allowed
+            cursor-pointer
         "
           aria-label={showPassword ? "Hide password" : "Show password"}
         >

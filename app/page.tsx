@@ -37,14 +37,14 @@ export default async function Home() {
             {user ? (
               <Link
                 href="/dashboard"
-                className="block w-full py-2.5 px-4 rounded-lg bg-slate-800 text-white font-medium text-sm text-center hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors"
+                className="block w-full py-2.5 px-4 rounded-lg bg-slate-800 text-white font-medium text-sm text-center hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors cursor-pointer"
               >
                 Go to dashboard
               </Link>
             ) : (
               <Link
                 href="/auth/login"
-                className="block w-full py-2.5 px-4 rounded-lg bg-slate-800 text-white font-medium text-sm text-center hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors"
+                className="block w-full py-2.5 px-4 rounded-lg bg-slate-800 text-white font-medium text-sm text-center hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors cursor-pointer"
               >
                 Sign in
               </Link>
