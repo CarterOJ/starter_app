@@ -21,7 +21,8 @@ export default function Profile() {
   const [isUploading, setIsUploading] = useState(false);
   const [editName, setEditName] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [avatarSuccessMessage, setAvatarSuccessMessage] = useState<string | null>(null);
+  const [nameSuccessMessage, setNameSuccessMessage] = useState<string | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const router = useRouter();
 
@@ -68,7 +69,7 @@ export default function Profile() {
   async function handleNameUpdate(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
-    setSuccessMessage(null);
+    setNameSuccessMessage(null);
 
     if (!editName.trim()) {
       setError("Name cannot be empty");
@@ -97,8 +98,8 @@ export default function Profile() {
       if (profile) {
         setProfile({ ...profile, full_name: editName.trim() });
       }
-      setSuccessMessage("Name updated successfully!");
-      setTimeout(() => setSuccessMessage(null), 3000);
+      setNameSuccessMessage("Name updated successfully!");
+      setTimeout(() => setNameSuccessMessage(null), 3000);
     } catch (error) {
       console.error("Error:", error);
       setError("An unexpected error occurred");
@@ -169,8 +170,8 @@ export default function Profile() {
       if (profile) {
         setProfile({ ...profile, avatar_url: publicUrlData.publicUrl });
       }
-      setSuccessMessage("Avatar updated successfully!");
-      setTimeout(() => setSuccessMessage(null), 3000);
+      setAvatarSuccessMessage("Avatar updated successfully!");
+      setTimeout(() => setAvatarSuccessMessage(null), 3000);
     } catch (error) {
       console.error("Error uploading avatar:", error);
       setError("Failed to upload avatar. Please try again.");
@@ -262,7 +263,7 @@ export default function Profile() {
           </div>
         )}
 
-        {successMessage && (
+        {avatarSuccessMessage && (
           <div
             role="alert"
             className="
@@ -277,7 +278,7 @@ export default function Profile() {
               mb-6
             "
           >
-            {successMessage}
+            {avatarSuccessMessage}
           </div>
         )}
 
@@ -375,6 +376,26 @@ export default function Profile() {
             </p>
           </div>
         </div>
+        
+        {nameSuccessMessage && (
+          <div
+            role="alert"
+            className="
+              rounded-lg
+              bg-green-50
+              border
+              border-green-100
+              px-4
+              py-3
+              text-sm
+              text-green-700
+              mb-6
+            "
+          >
+            {nameSuccessMessage}
+          </div>
+        )}
+
 
         <div className="
           bg-white/80 

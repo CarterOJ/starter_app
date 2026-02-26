@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import Spinner from "@/components/spinner";
 
 interface Profile {
   full_name: string | null;
   email: string;
+  avatar_url?: string | null;
 }
 
 export default function Dashboard() {
@@ -30,13 +32,13 @@ export default function Dashboard() {
 
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
-          .select("full_name, email")
+          .select("full_name, email, avatar_url")
           .eq("id", user.id)
           .single();
 
         if (profileError) {
           console.error("Error loading profile:", profileError);
-          setProfile({ full_name: null, email: user.email || "" });
+          setProfile({ full_name: null, email: user.email || "", avatar_url: null });
         } else {
           setProfile(profileData);
         }
@@ -109,27 +111,53 @@ export default function Dashboard() {
             </div>
             
             <div className="flex items-center gap-3">
-              <Link
-                href="/profile"
-                className="
-                  flex items-center justify-center
-                  w-12 h-12
-                  rounded-full
-                  bg-slate-800
-                  text-white
-                  font-medium
-                  text-lg
-                  hover:bg-slate-700
-                  transition-colors
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-slate-500
-                  focus:ring-offset-2
-                "
-                title="View Profile"
-              >
-                {displayName.charAt(0).toUpperCase()}
-              </Link>
+              {profile?.avatar_url ? (
+                <Link
+                  href="/profile"
+                  className="
+                    relative 
+                    w-12 
+                    h-12 
+                    rounded-full 
+                    overflow-hidden 
+                    border-4 
+                    border-slate-200 
+                    shadow-lg
+                  "
+                  title="View Profile"
+                >
+                  <Image
+                    src={profile.avatar_url}
+                    alt={displayName}
+                    fill
+                    className="object-cover"
+                    priority
+                    unoptimized
+                />
+                </Link>
+              ) : (
+                <Link
+                  href="/profile"
+                  className="
+                    flex items-center justify-center
+                    w-12 h-12
+                    rounded-full
+                    bg-slate-800
+                    text-white
+                    font-medium
+                    text-lg
+                    hover:bg-slate-700
+                    transition-colors
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-slate-500
+                    focus:ring-offset-2
+                  "
+                  title="View Profile"
+                >
+                  {displayName.charAt(0).toUpperCase()}
+                </Link>
+              )}
 
               <button
                 onClick={handleLogout}
