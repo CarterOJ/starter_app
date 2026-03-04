@@ -126,6 +126,17 @@ Defined in `supabase/schemas/avatars.sql` for `storage.objects`:
 5. On authenticated pages (`dashboard`, `profile`), user/profile data is fetched from Supabase.
 6. Logout calls `supabase.auth.signOut()` and routes back to login.
 
+## Testing
+
+This project uses **Vitest** with **React Testing Library** for component testing. Tests are in `tests/` with naming pattern `*.test.ts` or `*.test.tsx`.
+
+**Run tests:**
+- Once: `npm test`
+- Watch mode: `npm test -- --watch`
+- With UI: `npm test -- --ui`
+
+**Write new tests** by creating a test file and using `describe()` for test suites, `it()` for individual tests, and `expect()` for assertions. See existing tests for patterns: utility tests in `email-validation.test.ts`, component tests in `spinner.test.tsx`, and mocked service tests in `auth-client.test.ts`. Use `vi.mock()` for external dependencies like Supabase.
+
 ## Deployment Instructions
 
 ### Using Supabase Cloud
