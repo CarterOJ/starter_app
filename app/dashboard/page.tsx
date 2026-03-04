@@ -18,11 +18,13 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  // Fetch authenticated user and profile data on mount
   useEffect(() => {
     async function loadProfile() {
       try {
         const supabase = createClient();
         
+        // Check if user is authenticated, redirect if not
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
@@ -30,6 +32,7 @@ export default function Dashboard() {
           return;
         }
 
+        // Fetch user's profile data from database
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("full_name, email, avatar_url")
@@ -52,6 +55,7 @@ export default function Dashboard() {
     loadProfile();
   }, [router]);
 
+  // Sign out user and return to login page
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();

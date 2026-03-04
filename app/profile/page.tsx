@@ -26,11 +26,13 @@ export default function Profile() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const router = useRouter();
 
+  // Load user profile and avatar on component mount
   useEffect(() => {
     async function loadProfile() {
       try {
         const supabase = createClient();
 
+        // Verify user is authenticated
         const { data: { user }, error: userError } = await supabase.auth.getUser();
 
         if (userError || !user) {
@@ -66,11 +68,13 @@ export default function Profile() {
     loadProfile();
   }, [router]);
 
+  // Update user's full name in database
   async function handleNameUpdate(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
     setNameSuccessMessage(null);
 
+    // Validate input before submission
     if (!editName.trim()) {
       setError("Name cannot be empty");
       return;
@@ -108,13 +112,16 @@ export default function Profile() {
     }
   }
 
+  // Upload avatar to Supabase Storage and update profile
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file");
+    // Validate file type and size
+    const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if (!allowedMimeTypes.includes(file.type)) {
+      setError("Please select a JPEG, PNG, GIF, or WEBP image");
       return;
     }
 
@@ -364,7 +371,7 @@ export default function Profile() {
               <input
                 id="avatar-input"
                 type="file"
-                accept="image/*"
+                accept="image/jpeg, image/png, image/gif, image/webp"
                 onChange={handleAvatarUpload}
                 disabled={isUploading}
                 className="hidden"
@@ -372,7 +379,7 @@ export default function Profile() {
             </div>
 
             <p className="text-xs text-slate-500 mt-3 text-center">
-              JPG, PNG, or GIF • Max 5MB
+              JPEG, PNG, WEBP, or GIF • Max 5MB
             </p>
           </div>
         </div>

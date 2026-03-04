@@ -8,6 +8,7 @@ import Password from "@/components/password";
 import Email from "@/components/email";
 
 export default function SignupPage() {
+  // Form input state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,16 +16,19 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  // Track form field validation state to enable/disable submit button
   const [emailSubmittable, setEmailSubmittable] = useState(false);
   const [passwordSubmittable, setPasswordSubmittable] = useState(false);
   const router = useRouter();
 
+  // Create new user account with email and password
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
+      // Use browser-based Supabase client for auth
       const supabase = createClient();
       const { error: signUpError } = await supabase.auth.signUp({
         email,
@@ -93,6 +97,7 @@ export default function SignupPage() {
               </div>
             )}
 
+            {/* Email field with real-time validation feedback */}
             <Email 
               email={email} 
               setEmail={setEmail} 
@@ -101,6 +106,7 @@ export default function SignupPage() {
               setSubmittable={setEmailSubmittable}
             />
 
+            {/* Password and confirm password fields with strength validation */}
             <div>
               <Password 
                 showPassword={showPassword} 

@@ -3,6 +3,13 @@
 import { useState, useEffect } from "react";
 import { Dispatch, SetStateAction } from "react";
 
+// Password must be 8+ chars and include at least one number
+export function isValidPassword(password: string): boolean {
+  const isValidLength = password.length >= 8;
+  const includesNumber = /\d/.test(password);
+  return isValidLength && includesNumber;
+}
+
 interface PasswordProps {
   showPassword: boolean, 
   setShowPassword: Dispatch<SetStateAction<boolean>>, 
@@ -29,17 +36,20 @@ export default function Password({
   const [isFocused, setIsFocused] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Only show validation when creating account and field is focused
   const showValidation = isCreating && isFocused;
   const isValidLength = password.length >= 8;
   const includesNumber = /\d/.test(password);
-  const isReference = password === reference;
+  const isReference = password === reference;  // Check if confirm password matches
 
+  // Apply green for valid, red for invalid, neutral initially
   const borderClasses = showValidation && password.length > 0
-    ? (!reference || isReference) && isValidLength && includesNumber
+    ? (!reference || isReference) && isValidPassword(password)
       ? "border-green-500 focus:ring-green-300"
       : "border-red-500 focus:ring-red-300"
     : "border-slate-200 focus:ring-slate-300";
 
+  // Update validation state based on password strength and match (if confirm field)
   useEffect(() => {
     if (reference && !isReference) {
       setErrorMessage("Passwords must match");
@@ -68,6 +78,7 @@ export default function Password({
         {label}
       </label>
 
+      {/* Only show error message during validation if password is invalid */}
       {showValidation && password.length > 0 && errorMessage && 
         <p className="mb-1.5 text-sm text-red-600">{errorMessage}</p>
       }
@@ -78,12 +89,12 @@ export default function Password({
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => setIsFocused(true)}  // Track focus to show validation
           onBlur={() => setIsFocused(false)}
           required
           autoComplete="current-password"
           placeholder="••••••••"
-          disabled={isLoading}
+          disabled={isLoading}  // Disable while form is submitting
           className={`
             w-full 
             px-4 
@@ -104,7 +115,7 @@ export default function Password({
         />
         <button
           type="button"
-          onClick={() => setShowPassword((p) => !p)}
+          onClick={() => setShowPassword((p) => !p)}  // Toggle password visibility
           disabled={isLoading}
           className="
             absolute 

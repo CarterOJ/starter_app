@@ -1,4 +1,6 @@
+// Loading spinner with configurable size variants
 export default function Spinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+  // Define CSS classes for each size option
   const sizeClasses = {
     sm: "w-6 h-6 border-2",
     md: "w-10 h-10 border-3",

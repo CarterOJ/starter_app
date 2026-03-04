@@ -8,19 +8,23 @@ import Password from "@/components/password";
 import Email from "@/components/email";
 
 export default function LoginPage() {
+  // Form input state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);  // Prevent duplicate submissions
+  // Router for navigation after successful login
   const router = useRouter();
 
+  // Authenticate user with email and password
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
+      // Use browser-based Supabase client for auth
       const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,

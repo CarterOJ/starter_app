@@ -3,6 +3,11 @@
 import { useState, useEffect } from "react";
 import { Dispatch, SetStateAction } from "react";
 
+// Simple regex check for valid email format
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 interface EmailProps {  
   email: string,
   setEmail: Dispatch<SetStateAction<string>>,
@@ -15,15 +20,18 @@ export default function Email({ email, setEmail, isLoading, isCreating, setSubmi
   const [isFocused, setIsFocused] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Only show validation feedback when creating a new account and field is focused
   const showValidation = isCreating && isFocused;
-  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValid = isValidEmail(email);
 
+  // Apply green border for valid, red for invalid, neutral initially
   const borderClasses = showValidation && email.length > 0
     ? isValid
       ? "border-green-500 focus:ring-green-300"
       : "border-red-500 focus:ring-red-300"
     : "border-slate-200 focus:ring-slate-300";
 
+  // Update validation state and parent form submission availability when email changes
   useEffect(() => {
     if (!isValid) {
       setErrorMessage("Please enter a valid email address.");
@@ -44,6 +52,7 @@ export default function Email({ email, setEmail, isLoading, isCreating, setSubmi
         Email
       </label>
 
+      {/* Only show error message during validation if email is invalid */}
       {showValidation && email.length > 0 && errorMessage && 
         <p className="mb-1.5 text-sm text-red-600">{errorMessage}</p>
       }
@@ -53,12 +62,12 @@ export default function Email({ email, setEmail, isLoading, isCreating, setSubmi
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        onFocus={() => setIsFocused(true)}
+        onFocus={() => setIsFocused(true)}  // Track focus to show validation
         onBlur={() => setIsFocused(false)}
         required
         autoComplete="email"
         placeholder="you@example.com"
-        disabled={isLoading}
+        disabled={isLoading}  // Disable while form is submitting
         className={`
           w-full 
           px-4 

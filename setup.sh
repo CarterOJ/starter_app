@@ -37,7 +37,7 @@ npx supabase db reset
 
 section "Setup complete!"
 echo "Next steps:"
-echo "  1. Create a public bucket named 'profiles' that only allows images and accepts files < 5MB."
+echo "  1. Create a public bucket named 'profiles' that only allows JPEG, PNG, WEBP, or GIF images and only accepts files < 5MB."
 echo "  2. Run 'npm run dev' to start the development server."
 echo "  3. Visit http://localhost:3000 to see the app in action."
 echo "  4. Sign up for a new account to test authentication."

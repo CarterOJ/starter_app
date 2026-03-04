@@ -4,8 +4,8 @@ FOR INSERT
 TO authenticated
 WITH CHECK (
   bucket_id = 'profiles' AND
-  (storage.foldername(name))[1] = 'avatars'
-  AND owner = auth.uid()
+  (storage.foldername(name))[1] = 'avatars' AND
+  owner = auth.uid()
 );
 
 
@@ -17,8 +17,6 @@ USING (
   bucket_id = 'profiles' AND
   (storage.foldername(name))[1] = 'avatars'
   AND owner = auth.uid()
-  AND mime_type in ('image/jpeg', 'image/png', 'image/gif', 'image/webp')
-  AND (metadata->>'size')::int <= 5242880
 );
 
 
@@ -30,6 +28,11 @@ USING (
   bucket_id = 'profiles' AND
   (storage.foldername(name))[1] = 'avatars'
   AND owner = auth.uid()
+)
+WITH CHECK (
+  bucket_id = 'profiles' AND
+  (storage.foldername(name))[1] = 'avatars' AND
+  owner = auth.uid()
 );
 
 
