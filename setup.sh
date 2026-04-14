@@ -10,17 +10,27 @@ set -euo pipefail
 
 trap 'echo "Script failed on line $LINENO"; exit 1' ERR
 
-section "Continuing under the assumption that Supabase is already initialized and Docker is running..."
+section "Continuing under the assumption that prequisites are met..."
 
 section "Installing dependencies..."
 npm install
 
+section "Fixing any npm issues..."
+if ! npm audit fix; then
+  echo "npm audit fix could not fully resolve issues; continuing setup."
+fi
+
+section "Adding project ID to supabase config..."
+PROJECT_ID=$(basename "$(dirname "$(realpath "$0")")")
+sed -i "s|^\(project_id = \"\)[^\"]*\(\"\)|\1${PROJECT_ID}\2|" supabase/config.toml
+echo "Project ID set to '${PROJECT_ID}' in supabase/config.toml."
+
 section "Starting Supabase..."
-npx supabase start
+npx supabase@latest start
 
 section "Extracting credentials..."
-NEXT_PUBLIC_SUPABASE_URL=$(npx supabase status | grep "Project URL" | awk '{print $5}')
-NEXT_PUBLIC_SUPABASE_ANON_KEY=$(npx supabase status | grep "Publishable" | awk '{print $4}')
+NEXT_PUBLIC_SUPABASE_URL=$(npx supabase@latest status | grep "Project URL" | awk '{print $5}')
+NEXT_PUBLIC_SUPABASE_ANON_KEY=$(npx supabase@latest status | grep "Publishable" | awk '{print $4}')
 if [[ -z "$NEXT_PUBLIC_SUPABASE_URL" || -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ]]; then
   echo "Failed to extract Supabase credentials"
   exit 1
@@ -31,13 +41,13 @@ cat > .env.local << EOF
 NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 EOF
+echo ".env.local file created with Supabase credentials."
 
 section "Running migrations..."
-npx supabase db reset
+npx supabase@latest db reset
 
 section "Setup complete!"
 echo "Next steps:"
-echo "  1. Create a public bucket named 'profiles' that only allows JPEG, PNG, WEBP, or GIF images and only accepts files < 5MB."
-echo "  2. Run 'npm run dev' to start the development server."
-echo "  3. Visit http://localhost:3000 to see the app in action."
-echo "  4. Sign up for a new account to test authentication."
+echo "  1. Run 'npm run dev' to start the development server."
+echo "  2. Visit http://localhost:3000 to see the app in action."
+echo

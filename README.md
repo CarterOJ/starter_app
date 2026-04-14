@@ -31,9 +31,11 @@ Use it as a baseline so new projects can start with auth, profile data, and depl
 
 The setup script does the following:
 - Installs npm dependencies
-- Starts local Supabase
-- Writes `.env.local` with local Supabase URL and publishable key
-- Resets/pushes local DB state with migrations
+- Runs `npm audit fix` as a best-effort cleanup step, but continues if it cannot fully resolve issues
+- Updates `supabase/config.toml` so `project_id` matches the repository folder name
+- Starts local Supabase with `npx supabase@latest start`
+- Writes `.env.local` with the local Supabase URL and publishable key
+- Resets the local DB and applies migrations with `npx supabase@latest db reset`
 
 ## Manual Setup (Step-by-Step)
 
@@ -41,14 +43,15 @@ If you want to set up without the script:
 
 1. Install dependencies:
    - `npm install`
-2. Start local Supabase:
-   - `npx supabase start`
-3. Create `.env.local` with values from `npx supabase status`:
+2. Update `supabase/config.toml` so `project_id` matches the folder name you want to use locally.
+3. Start local Supabase:
+   - `npx supabase@latest start`
+4. Create `.env.local` with values from `npx supabase@latest status`:
    - `NEXT_PUBLIC_SUPABASE_URL=...`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY=...`
-4. Apply local migrations:
-   - `npx supabase db reset`
-5. Run the app:
+5. Apply local migrations:
+   - `npx supabase@latest db reset`
+6. Run the app:
    - `npm run dev`
 
 ## Project Structure
@@ -180,10 +183,10 @@ This project uses **Vitest** with **React Testing Library** for component testin
 
 ## Troubleshooting
 
-- **`npx supabase start` fails**
+- **`npx supabase@latest start` fails**
   - Ensure Docker is running and has enough resources.
 - **Missing `.env.local` values**
-  - Re-run `npx supabase status` and verify URL/key values were copied correctly.
+   - Re-run `npx supabase@latest status` and verify URL/key values were copied correctly.
 - **Redirect loops to login**
   - Check `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` match the same project.
   - Confirm proxy session handling in `proxy.ts` is active.
@@ -191,6 +194,6 @@ This project uses **Vitest** with **React Testing Library** for component testin
   - Confirm `profiles` bucket exists, is public, and storage policies are applied.
   - Check file type is an JPEG, GIF, WEBP, or PNG and size is under 5MB.
 - **Cloud DB missing latest schema**
-  - Re-link with `npx supabase link --project-ref <project-id>` then run `npx supabase db push`.
+   - Re-link with `npx supabase@latest link --project-ref <project-id>` then run `npx supabase@latest db push`.
 
 
