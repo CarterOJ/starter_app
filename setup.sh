@@ -35,6 +35,7 @@ if [[ -z "$NEXT_PUBLIC_SUPABASE_URL" || -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ]]; 
   echo "Failed to extract Supabase credentials"
   exit 1
 fi
+echo "Supabase credentials extracted successfully."
 
 section "Creating .env.local file..."
 cat > .env.local << EOF
@@ -42,9 +43,6 @@ NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 EOF
 echo ".env.local file created with Supabase credentials."
-
-section "Running migrations..."
-npx supabase@latest db reset
 
 section "Setup complete!"
 echo "Next steps:"
