@@ -35,7 +35,6 @@ The setup script does the following:
 - Updates `supabase/config.toml` so `project_id` matches the repository folder name
 - Starts local Supabase with `npx supabase@latest start`
 - Writes `.env.local` with the local Supabase URL and publishable key
-- Resets the local DB and applies migrations with `npx supabase@latest db reset`
 
 ## Manual Setup (Step-by-Step)
 
@@ -49,9 +48,7 @@ If you want to set up without the script:
 4. Create `.env.local` with values from `npx supabase@latest status`:
    - `NEXT_PUBLIC_SUPABASE_URL=...`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY=...`
-5. Apply local migrations:
-   - `npx supabase@latest db reset`
-6. Run the app:
+5. Run the app:
    - `npm run dev`
 
 ## Project Structure
