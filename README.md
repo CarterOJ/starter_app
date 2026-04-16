@@ -151,17 +151,17 @@ This project uses **Vitest** with **React Testing Library** for component testin
    - Click "Create a new bucket" and name it `profiles`
    - Set it as **Public** to allow public access
    - Configure file size limit to **5 MB** maximum
+   - Configure allowed MIME types to **image/jpeg**, **image/png**, **image/webp**, and **image/gif** to restrict uploads to valid avatar formats
 5. **Link your local instance and apply migrations**:
    - Run `npx supabase login` to authenticate with your Supabase account
    - Run `npx supabase link --project-ref <project-id>` to link your local instance to your cloud project (replace `<project-id>` with your actual project ID)
    - Run `npx supabase db push` to apply any pending migrations from your local `supabase/migrations` folder to the cloud database
 6. **(Optional) Set up CI/CD with GitHub**:
-   - Go to "Project Settings" → "CI/CD"
    - To enable GitHub integration, you'll need:
-     - Your **Project ID** (from Project Settings → General)
-     - Your **Database Password** (from Database → Settings)
-     - A **Personal Access Token** (from Account Preferences → Access Tokens)
-   - Add as secrets on GitHub to bypass login and add a workflow to apply migrations
+     - Your **Project ID** saved as `PRODUCTION_PROJECT_ID` (from Project Settings → General)
+     - Your **Database Password** saved as `PRODUCTION_DB_PASSWORD` (from Database → Settings)
+     - A **Personal Access Token** saved as `SUPABASE_ACCESS_TOKEN` (from Account Preferences → Access Tokens)
+   - Add as secrets on GitHub to bypass login and modify the default workflow as needed
 7. **Deploy your Next.js app** - Deploy to your preferred hosting platform (Vercel, Netlify, etc.) with the environment variables configured
 
 ### Using Vercel
@@ -191,5 +191,3 @@ This project uses **Vitest** with **React Testing Library** for component testin
   - Check file type is an JPEG, GIF, WEBP, or PNG and size is under 5MB.
 - **Cloud DB missing latest schema**
    - Re-link with `npx supabase@latest link --project-ref <project-id>` then run `npx supabase@latest db push`.
-
-
