@@ -144,9 +144,8 @@ This project uses **Vitest** with **React Testing Library** for component testin
 1. **Create a Supabase project** - Go to [supabase.com](https://supabase.com) and log in to your account
 2. **Set up your database** - Create a new project and wait for the database to be provisioned
 3. **Obtain your credentials** - In the Supabase dashboard:
-   - Navigate to "Project Overview"
-   - Copy your **Project URL** (this will be your `NEXT_PUBLIC_SUPABASE_URL`)
-   - Copy your **Publishable API Key** key (this will be your `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+   - Copy your **Project URL** from the **Project Overview** page (this will be your `NEXT_PUBLIC_SUPABASE_URL`)
+   - Copy your **Publishable API Key** from the **Project Setting > API Keys** page (this will be your `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
 4. **Create a storage bucket**:
    - Go to the "Storage" section in your Supabase dashboard
    - Click "Create a new bucket" and name it `profiles`
